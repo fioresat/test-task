@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:test_task/consts/service_strings.dart';
 import 'package:test_task/service/reddit_service.dart';
 import 'package:test_task/screen/widget/reddit_post_card.dart';
-import 'package:test_task/storage/screen_arguments.dart';
-import 'package:test_task/storage/reddit_post.dart';
+import 'package:test_task/model/screen_arguments.dart';
+import 'package:test_task/model/reddit_post.dart';
 import 'package:test_task/storage/reddit_post_repository.dart';
 
 class MainScreen extends StatefulWidget {

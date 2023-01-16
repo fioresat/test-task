@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:test_task/storage/screen_arguments.dart';
+import 'package:test_task/model/screen_arguments.dart';
 
 class DetailedScreen extends StatelessWidget {
   const DetailedScreen({Key? key}) : super(key: key);

@@ -1,4 +1,4 @@
-import 'package:test_task/storage/reddit_post.dart';
+import 'package:test_task/model/reddit_post.dart';
 
 class RedditPostsRepository {
   final _redditPosts = <RedditPost>[];
