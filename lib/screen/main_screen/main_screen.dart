@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:test_task/consts/service_strings.dart';
+import 'package:test_task/service/reddit_service.dart';
 import 'package:test_task/screen/widget/reddit_post_card.dart';
-import 'package:test_task/screen/widget/screen_arguments.dart';
-
-import '../additional/reddit_service.dart';
-import '../storage/reddit_post.dart';
-import '../storage/reddit_post_repository.dart';
+import 'package:test_task/storage/screen_arguments.dart';
+import 'package:test_task/storage/reddit_post.dart';
+import 'package:test_task/storage/reddit_post_repository.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -27,10 +27,15 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double widthScreen = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
-        title: const Text("List of the Posts"),
+        title: const Text(
+          ServiceStrings.appName,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 22,
+          ),
+        ),
         elevation: 0,
       ),
       body: RefreshIndicator(
@@ -40,18 +45,19 @@ class _MainScreenState extends State<MainScreen> {
           itemBuilder: (_, int index) {
             var redditPostIndexed = _redditPosts[index];
             return RedditPostCard(
-                onTap: () {
-                  Navigator.pushNamed(
-                    context,
-                    '/detailed_screen',
-                    arguments: ScreenArguments(
-                      title: redditPostIndexed.title,
-                      ups: redditPostIndexed.ups,
-                      selftext: redditPostIndexed.selftext,
-                    ),
-                  );
-                },
-                redditPostIndexed: redditPostIndexed);
+              onTap: () {
+                Navigator.pushNamed(
+                  context,
+                  '/detailed_screen',
+                  arguments: ScreenArguments(
+                    title: redditPostIndexed.title,
+                    ups: redditPostIndexed.ups,
+                    selftext: redditPostIndexed.selftext,
+                  ),
+                );
+              },
+              redditPostIndexed: redditPostIndexed,
+            );
           },
         ),
       ),
@@ -70,9 +76,9 @@ class _MainScreenState extends State<MainScreen> {
     setState(() {
       if (redditData != null) {
         addNewPost(redditData);
-        print('created');
+        print(ServiceStrings.created);
       } else {
-        print('\nsomething wrong in _createData\n');
+        print(ServiceStrings.creationException);
       }
     });
   }
@@ -91,15 +97,14 @@ class _MainScreenState extends State<MainScreen> {
     if (max < 25 && max >= 0) {
       for (int i = max; i >= 0; i--) {
         _redditPostRepository.removePost(i);
-        // removing posts to update them from json
       }
       addNewPost(redditData); // add 25 posts from json
-      print('Updated');
+      print(ServiceStrings.updated);
     } else if (max == -1) {
       addNewPost(redditData);
-      print('Updated');
+      print(ServiceStrings.updated);
     } else {
-      print('\nSomething wrong in _updateData\n');
+      print(ServiceStrings.updateException);
     }
   }
 

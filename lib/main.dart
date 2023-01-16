@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:test_task/screen/detailed_screen.dart';
-import 'package:test_task/screen/main_screen.dart';
+import 'package:test_task/screen/detailed_screen/detailed_screen.dart';
+import 'package:test_task/screen/main_screen/main_screen.dart';
 
 
 void main() {
