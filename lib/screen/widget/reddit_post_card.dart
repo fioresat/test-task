@@ -19,14 +19,14 @@ class RedditPostCard extends StatelessWidget {
     double widthScreen = MediaQuery.of(context).size.width;
     return Card(
       elevation: 4,
-      margin: EdgeInsets.all(15),
+      margin: const EdgeInsets.all(15),
       color: Colors.white,
       child: ListTile(
         leading: redditPostIndexed.picture.contains(ServiceStrings.imageComparison)
             ? Container(
                 width: widthScreen * 0.2,
                 height: widthScreen * 0.2,
-                padding: EdgeInsets.symmetric(horizontal: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: CachedNetworkImage(
                   imageUrl: redditPostIndexed.picture,
                   placeholder: (context, url) => const CircularProgressIndicator(),
