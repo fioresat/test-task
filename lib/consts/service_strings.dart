@@ -8,4 +8,5 @@ abstract class ServiceStrings {
   static const noInternetConnection = 'No internet connection';
   static const request = 'Request...';
   static const failed = 'Request failed';
+  static const detailedScreenRoute = '/detailed_screen';
 }

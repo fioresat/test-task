@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:test_task/consts/service_strings.dart';
 import 'package:test_task/model/reddit_post.dart';
 import 'package:test_task/model/screen_arguments.dart';
 import 'package:test_task/screen/widget/reddit_post_card.dart';
@@ -21,7 +22,7 @@ class MainScreenWidget extends StatelessWidget {
           onTap: () {
             Navigator.pushNamed(
               context,
-              '/detailed_screen',
+              ServiceStrings.detailedScreenRoute ,
               arguments: ScreenArguments(
                 title: redditPostIndexed.title,
                 ups: redditPostIndexed.ups,
