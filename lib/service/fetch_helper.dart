@@ -1,33 +1,39 @@
 import 'dart:convert';
 import 'dart:async';
 import 'dart:io';
-import 'package:http/http.dart' as http;
+import 'package:test_task/model/reddit_post.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:test_task/consts/service_strings.dart';
-import '../consts/consts.dart';
 
 class FetchHelper {
-  Future<dynamic> getData() async {
-    print(ServiceStrings.request);
+  // Future<List<RedditPost>> getRedditPosts(String url) async {
+  //   return HttpClient()
+  //       .getUrl(Uri.parse(url))
+  //       .then((request) => request.close())
+  //       .then((response) => response.transform(utf8.decoder).join())
+  //       .then((stringData) =>
+  //           json.decode(stringData)['data']['children'] as List<dynamic>)
+  //       .then((redditData) =>
+  //           redditData.map((e) => RedditPost.fromJson(e['data'])).toList());
+  // }
+
+  Future<List<RedditPost>> getRedditPosts(String url) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     try {
-      http.Response response = await http.get(Uri.parse(Consts.baseUrl));
-      if (response.statusCode == 200) {
-        prefs.setString('cache', (response.body));
-        print(prefs.getString('cache'));
-        final body = jsonDecode(response.body);
-
-        return body;
-      } else {
-        print(response.statusCode);
-      }
+      HttpClientRequest request = await HttpClient().getUrl(Uri.parse(url));
+      HttpClientResponse response = await request.close();
+      String stringData = await response.transform(utf8.decoder).join();
+      prefs.setString('cache', (stringData));
+      List<dynamic> redditData =
+          json.decode(stringData)['data']['children'] as List<dynamic>;
+      List<RedditPost> redditPost =
+          redditData.map((e) => RedditPost.fromJson(e['data'])).toList();
+      return redditPost;
     } on SocketException catch (_) {
-      print(ServiceStrings.noInternetConnection);
-      if (prefs.getString('cache') != null) {
-        final body = jsonDecode(prefs.getString('cache')!);
-        return body;
-      }
-      else {print(ServiceStrings.failed);}
+      List<dynamic> redditData = json.decode(prefs.getString('cache')!)['data']
+          ['children'] as List<dynamic>;
+      List<RedditPost> redditPost =
+          redditData.map((e) => RedditPost.fromJson(e['data'])).toList();
+      return redditPost;
     }
   }
 }

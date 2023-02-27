@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:test_task/bloc/reddit_posts_bloc.dart';
 import 'package:test_task/consts/service_strings.dart';
-import 'package:test_task/cubit/reddit_posts_cubit.dart';
 import 'package:test_task/screen/widget/mains_screen_widget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -15,7 +15,11 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<RedditPostsCubit>(context).getRedditPosts();
+    context.read<RedditPostsBloc>().add(
+      const LoadRedditPostsEvent(
+        url: ServiceStrings.baseUrl,
+      ),
+    );
   }
 
   @override
@@ -31,20 +35,29 @@ class _MainScreenState extends State<MainScreen> {
         ),
         elevation: 0,
       ),
-      body: RefreshIndicator(
-        onRefresh:
-            BlocProvider.of<RedditPostsCubit>(context).refreshRedditPosts,
-        child: BlocBuilder<RedditPostsCubit, RedditPostsState>(
-          builder: (context, state) {
-            if (state is RedditPostsLoaded) {
-              return MainScreenWidget(
-                redditPostList: state.redditPosts,
-              );
-            } else {
-              return Container();
-            }
-          },
-        ),
+      body: BlocBuilder<RedditPostsBloc, RedditPostsState>(
+        builder: (context, state) {
+          if (state is RedditPostsLoading) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (state is RedditPostsLoaded) {
+            return RefreshIndicator(
+              onRefresh: () async {
+                context.read<RedditPostsBloc>().add(
+                  const RefreshRedditPostsEvent(
+                    url: ServiceStrings.baseUrl,
+                  ),
+                );
+              },
+              child: MainScreenWidget(
+                  redditPostList: state.redditPosts,
+                ),
+            );
+          } else {
+            return Container();
+          }
+        },
       ),
     );
   }

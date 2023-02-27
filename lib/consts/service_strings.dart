@@ -9,4 +9,7 @@ abstract class ServiceStrings {
   static const request = 'Request...';
   static const failed = 'Request failed';
   static const detailedScreenRoute = '/detailed_screen';
+  static const mainScreenRoute = '/main_screen';
+  static const baseUrl = 'https://www.reddit.com/r/flutterdev/new.json';
+  static const queryLimit = 24;
 }
